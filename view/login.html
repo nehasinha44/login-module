@@ -1,0 +1,17 @@
+<form method="post" action="" autocomplete="off" id="mainForm">
+     <div class="main">
+      <div class="container">
+                <span><b>User Login</b></span>
+                <span class="text-danger">
+                  <?php
+                  echo $validation;
+                  ?>
+                </span>
+                <div class="username">User Name :</div>
+                <input name="username" type="text" value="" id="inputusername">
+                <div class="Password">Password : </div>
+                 <input name="pass" type="password" class="pass" value = "" >
+               <input class="submitbuttom" type="submit" name="Submit" value="Login" onclick="myObject.validation();">
+             </div>
+             </div>
+</form>

@@ -1,0 +1,31 @@
+<form method="post"  action="" autocomplete="off" class="from">
+        <input type="submit" value="force logout for all browser" name="alllogout" class="forceout">
+       <div class="namepart"> <div class="ip">Ip </div>
+         <div class="browser">browser</div>
+         <div class="os">OS</div>
+       </div>
+      <?php
+
+           foreach ($sessioninformation as $key => $value) {
+                $session  = explode("+", $value); 
+                $sessioninformation = "Ip=".$session[0]."browser=".$session[1]."os=".$session[2] ;
+                $sessionid =explode("\"", $session[0]);
+                $sessionid = str_replace("\"","",$sessionid[1].$session[1]);
+                $ip=explode("\"",$session[0]);
+                $os= str_replace("\"","",str_replace(";","", $session[2]));
+                ?>
+                  <div class="valuepart"><div class="ipvalue"><span><?php echo $ip[1];?><span></div>
+                 <div class="browserpart"><span><?php echo $session[1]; ?><span></div>
+                    <div class="ospart"><span><?php echo  $os;?><span></div>
+                     
+                  </div>
+                 
+                    <?php
+                echo "<br>";
+              }
+
+           ?>
+      	<input type="submit" value="logout" name="logout" class="logout">
+      	<input type="hidden" value="<?php echo $sessionid;?>" name="sessionid"/>
+      	
+      </from>
