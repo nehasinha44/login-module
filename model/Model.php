@@ -6,7 +6,7 @@ class Model
     //conncetion with database function
     public function db_connection()
       {
-        $this->conn = new mysqli("localhost", "root", "", "Logininfo");
+        $this->conn = new mysqli("<ip-address>", "<dbName>", "<password>", "<TableName");
         if ($this->conn->connect_error)
           {
             die("Connection failed: " . $this->conn->connect_error);
