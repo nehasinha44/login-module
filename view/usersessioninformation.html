@@ -13,19 +13,20 @@
                 $sessionid = str_replace("\"","",$sessionid[1].$session[1]);
                 $ip=explode("\"",$session[0]);
                 $os= str_replace("\"","",str_replace(";","", $session[2]));
+
                 ?>
-                  <div class="valuepart"><div class="ipvalue"><span><?php echo $ip[1];?><span></div>
-                 <div class="browserpart"><span><?php echo $session[1]; ?><span></div>
-                    <div class="ospart"><span><?php echo  $os;?><span></div>
-                     
-                  </div>
+        <div class="valuepart"><div class="ipvalue"><span><?php echo $ip[1];?><span></div>
+                <div class="browserpart"><span><?php echo $session[1]; ?><span></div>
+                        <div class="ospart"><span><?php echo  $os;?><span></div>
+
+                 <input name="logout" type="submit" <?php echo ($sessionid == $_SESSION['sessionid']) ? 'enable' : 'disabled'; ?> value="logout"  class="logout"> 
+      				<input type="hidden" value="<?php echo $sessionid;?>" name="sessionid"/>
                  
                     <?php
-                echo "<br>";
               }
 
            ?>
-      	<input type="submit" value="logout" name="logout" class="logout">
-      	<input type="hidden" value="<?php echo $sessionid;?>" name="sessionid"/>
       	
       </from>
+
+     
