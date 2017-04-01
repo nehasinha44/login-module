@@ -5,28 +5,50 @@
          <div class="os">OS</div>
        </div>
       <?php
-
+if($sessioninformation != "")
+{
+           echo "Hello ".$_SESSION['name'];
            foreach ($sessioninformation as $key => $value) {
+                
                 $session  = explode("+", $value); 
+                $logoutval  = explode("\"", $value); 
                 $sessioninformation = "Ip=".$session[0]."browser=".$session[1]."os=".$session[2] ;
                 $sessionid =explode("\"", $session[0]);
                 $sessionid = str_replace("\"","",$sessionid[1].$session[1]);
                 $ip=explode("\"",$session[0]);
                 $os= str_replace("\"","",str_replace(";","", $session[2]));
+                $osval = ($os!=""?"$os":"");
+                $systemos = $this->model->getOS();
+               $_SESSION['sessionid'] = ((isset($_SESSION['sessionid'])=="")?"":$_SESSION['sessionid']);
 
                 ?>
-        <div class="valuepart"><div class="ipvalue"><span><?php echo $ip[1];?><span></div>
-                <div class="browserpart"><span><?php echo $session[1]; ?><span></div>
-                        <div class="ospart"><span><?php echo  $os;?><span></div>
+                  <div class="valuepart"><div class="ipvalue"><span style="overflow-wrap: break-word;"><?php echo $ip[1];?><span></div>
+                 <div class="browserpart"><span><?php echo ($session[1]!=""?"$session[1]":"");; ?><span></div>
+                    <div class="ospart"><span><?php echo  $osval;?><span></div>
 
-                 <input name="logout" type="submit" <?php echo ($sessionid == $_SESSION['sessionid']) ? 'enable' : 'disabled'; ?> value="logout"  class="logout"> 
-      				<input type="hidden" value="<?php echo $sessionid;?>" name="sessionid"/>
+                 <input name="logout" type="submit" <?php echo ($sessionid == $_SESSION['sessionid'] && $osval == $systemos) ? 'enable' : 'disabled'; ?> value="logout"  class="logout"> 
+                <?php if($sessionid == $_SESSION['sessionid']){?>
+      		         <input type="hidden" value="<?php echo $logoutval[0]."$".$logoutval[1];?>" name="sessionid"/>
+                <?php } 
+				else
+				{
+				?>
+				<?php
+
+				}?>
+      	  
+                  </div>
                  
                     <?php
+                echo "<br>";
+              }}
+
+              else
+              {
+              	unset($_SESSION['name']);
+                 header("Refresh:0");
               }
 
            ?>
       	
       </from>
-
-     
