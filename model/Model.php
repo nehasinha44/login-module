@@ -6,7 +6,7 @@ class Model
     //conncetion with database function
     public function db_connection()
       {
-        $this->conn = new mysqli("<ip-address>", "<dbName>", "<password>", "<TableName");
+         $this->conn = new mysqli("localhost", "id1185977_root", "root12345", "id1185977_logininfo");
         if ($this->conn->connect_error)
           {
             die("Connection failed: " . $this->conn->connect_error);
@@ -15,13 +15,12 @@ class Model
     // login page function 
     public function index()
       {
-        $name     = (isset($_REQUEST['username'])==""?"":$_REQUEST['username']);
-        $password = (isset($_REQUEST['pass'])==""?"":$_REQUEST['pass']);
+        $name     = (isset($_REQUEST['username'])==""?"":strtolower($_REQUEST['username']));
+        $password = (isset($_REQUEST['pass'])==""?"":strtolower($_REQUEST['pass']));
         if ($name != "")
           {
             $this->db_connection();
-             $sql    = "SELECT username, password from login where username= '" . $name . "'";
-            
+            $sql    = "SELECT username, password from login where username= '" . $name . "'";
             $result = $this->conn->query($sql);
             if ($result->num_rows > 0)
               {
@@ -43,7 +42,7 @@ class Model
                             while ($row = $result->fetch_assoc())
                               {
                               }
-                            header('Location: http://localhost/test/index.php');
+                            header('Location: http://neha44.000webhostapp.com/test/test/index.php');
                           }
                         else
                           {
@@ -52,7 +51,7 @@ class Model
                             if ($this->conn->query($sql) === TRUE)
                               {
                                 $_SESSION['sessionid'] = $sessionid;
-                                header('Location: http://localhost/test/index.php');
+                                header('Location:http://neha44.000webhostapp.com/test/test/index.php');
                               }
                           }
                       }
@@ -72,7 +71,7 @@ class Model
     public function sessioninformation()
       {
         $this->db_connection();
-        if ($_SESSION['name'] != "")
+        if ((isset($_SESSION['name'])==""?"":$_SESSION['name']) != "")
           {
             $sql = "SELECT * FROM sessioninformation where username='" . $_SESSION['name'] . "'";
             if ($result = $this->conn->query($sql))
@@ -95,7 +94,9 @@ class Model
     public function logout($sessionid)
       {
         $this->db_connection();
-        $sql = "DELETE FROM sessioninformation WHERE sessionid='" . $_REQUEST['sessionid'] . "'";
+         $session  = explode("$", $_REQUEST['sessionid']);
+         $sql = "DELETE FROM sessioninformation WHERE sessioninformation='" . $session[0]."\"".$session[1] ."\";'";
+
         if ($this->conn->query($sql) === TRUE)
           {
             echo "Record deleted successfully";
@@ -104,7 +105,8 @@ class Model
           {
             echo "Error deleting record: " . $this->conn->error;
           }
-        header("location: index.php");
+          unset($_SESSION['name']);
+        header("Location:http://neha44.000webhostapp.com/test/test/index.php");
       }
       // out form all browser
     public function logoutall()
@@ -136,6 +138,7 @@ class Model
                     return $row['sessionid'];
                   }
               }
+       return false;
           }
         else
           {
@@ -143,28 +146,25 @@ class Model
           }
       }
       //Get client ip address function
-    public function get_client_ip()
-      {
-        $ipaddress = '';
-        if (getenv('HTTP_CLIENT_IP'))
-            $ipaddress = getenv('HTTP_CLIENT_IP');
-        else if (getenv('HTTP_X_FORWARDED_FOR'))
-            $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-        else if (getenv('HTTP_X_FORWARDED'))
-            $ipaddress = getenv('HTTP_X_FORWARDED');
-        else if (getenv('HTTP_FORWARDED_FOR'))
-            $ipaddress = getenv('HTTP_FORWARDED_FOR');
-        else if (getenv('HTTP_FORWARDED'))
-            $ipaddress = getenv('HTTP_FORWARDED');
-        else if (getenv('REMOTE_ADDR'))
-            $ipaddress = getenv('REMOTE_ADDR');
-        else
-            $ipaddress = 'UNKNOWN';
-        return $ipaddress;
-      }
-    /*
-    method ot get brower name
-    */
+   // Function to get the client IP address
+function get_client_ip() {
+$ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+       $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+    }
     function get_browser_name($user_agent)
       {
         if (strpos($user_agent, 'Opera') || strpos($user_agent, 'OPR/'))
@@ -181,6 +181,9 @@ class Model
             return 'Internet Explorer';
         return 'Other';
       }
+function isMobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
     /*
     method to get Operating system information
     */
