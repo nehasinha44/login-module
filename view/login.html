@@ -10,8 +10,24 @@
                 <div class="username">User Name :</div>
                 <input name="username" type="text" value="" id="inputusername">
                 <div class="Password">Password : </div>
-                 <input name="pass" type="password" class="pass" value = "" >
-               <input class="submitbuttom" type="submit" name="Submit" value="Login" onclick="myObject.validation();">
+                 <input name="pass" type="password" class="pass" value = "" id="pass">
+               <input class="submitbuttom" type="submit" name="Submit" value="Login" onclick="validation();">
              </div>
              </div>
 </form>
+<script>
+     function validation() {
+        var username = $( "#inputusername" ).val();
+        var password = $( "#pass" ).val();
+        if (username == "" || username == undefined ) {
+        	alert("please enter username");
+
+        }
+        else if(password == "" || password == undefined)
+        {
+        	alert("please enter password");
+        }
+    }
+
+
+</script>
