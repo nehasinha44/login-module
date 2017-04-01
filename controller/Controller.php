@@ -12,17 +12,15 @@ class Controller {
  
  public function index()
  {
-
   $value              = $this->model->get_client_ip();
   $get_browser_name   = $this->model->get_browser_name($_SERVER['HTTP_USER_AGENT']);
   $os                 = $this->model->getOS();
   $sessionid          = str_replace("","",$value.$get_browser_name);
   $checksessionid     = $this->model->checksessionid($sessionid);
-
-  if($checksessionid == true){
+  if($checksessionid == true && isset($_SESSION['name'])){
     $validation =$this->model->index();
     $sessioninformation = $this->model->sessioninformation();
-   //die();
+   
     if(isset($_REQUEST['logout']) == "" && isset($_REQUEST['alllogout']) =="" )
     {
        include 'view/usersessioninformation.html';
@@ -34,7 +32,8 @@ class Controller {
         $this->model->logoutall();
       }
       else
-      $this->model->logout($_REQUEST['sessionid']);
+        $logoutValue=serialize($value . "+" . $get_browser_name . "+" . $os);
+      $this->model->logout($logoutValue);
     }
  }
  else
